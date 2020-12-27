@@ -4,8 +4,10 @@ Created on Sat Dec 26 22:05:38 2020.
 
 @author: Tomas Adamek
 """
+import math
 
 
+# %% SI units
 class Time():
     """
     Define time units.
@@ -135,7 +137,7 @@ class Length():
 
 class Mass():
     """
-    Define lenght units.
+    Define mass units.
 
     val = number
     unit = string, ('kg' = kilograms, 't' = tuns, 'g' = grams)
@@ -186,3 +188,95 @@ class Mass():
             self.unit = 't'
         else:
             raise Exception('Not possible reduce unit.')
+
+
+# %% other units
+class Angle():
+    """
+    Define rotation units.
+
+    val = number
+    unit = string, ('rad' = radians, 'deg' = degrees)
+    """
+
+    def __init__(self, val, unit='rad'):
+        """Class return number with unit."""
+        if unit == 'rad':
+            self.unit = unit
+        elif unit == 'deg':
+            self.unit = unit
+        elif unit == 'g':
+            self.unit = unit
+        else:
+            raise Exception('non-specific unit.')
+        self.val = val
+
+    def __str__(self):
+        """For print and string."""
+        if self.unit == 'deg':
+            return str(self.val) + "\xb0"
+        else:
+            return str(self.val) + self.unit
+
+    def __int__(self):
+        """For int() function."""
+        return int(round(self.val))
+
+    def __float__(self):
+        """For float() function."""
+        return float(self.val)
+
+    def toRad(self):
+        """Convert to radians."""
+        if self.unit == 'deg':
+            self.val = math.radians(self.val)
+            self.unit = 'rad'
+        elif self.unit == 'rad':
+            pass
+        else:
+            raise Exception('Not possible convert.')
+
+    def toDeg(self):
+        """Convert to degrees."""
+        if self.unit == 'rad':
+            self.val = math.degrees(self.val)
+        elif self.unit == 'deg':
+            pass
+        else:
+            raise Exception('Not possible convert.')
+
+    def sin(self):
+        """Sinus."""
+        if self.unit == 'deg':
+            return math.sin(math.radians(self.val))
+        elif self.unit == 'rad':
+            return math.sin(self.val)
+        else:
+            raise Exception('Unsupported format.')
+
+    def cos(self):
+        """Cosinus."""
+        if self.unit == 'deg':
+            return math.cos(math.radians(self.val))
+        elif self.unit == 'rad':
+            return math.cos(self.val)
+        else:
+            raise Exception('Unsupported format.')
+
+    @staticmethod
+    def asin(sin, unit):
+        """Create rotation unit from sinus."""
+        val = math.acos(sin)
+        unit = unit
+        if unit == 'deg':
+            val = round(math.degrees(val), 13)
+        return Angle(val, unit)
+
+    @staticmethod
+    def acos(cos, unit='rad'):
+        """Create rotation unit from cosinus."""
+        val = math.acos(cos)
+        unit = unit
+        if unit == 'deg':
+            val = round(math.degrees(val), 13)
+        return Angle(val, unit)
