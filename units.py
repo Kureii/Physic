@@ -34,7 +34,9 @@ class Time():
 
     def __int__(self):
         """For int() function."""
-        return int(round(self.val))
+        if not self.val % 1:
+            return str(int(self.val)) + self.unit
+        return str(self.val) + self.unit
 
     def __float__(self):
         """For float() function."""
@@ -90,6 +92,8 @@ class Length():
 
     def __str__(self):
         """For print and string."""
+        if not self.val % 1:
+            return str(int(self.val)) + self.unit
         return str(self.val) + self.unit
 
     def __int__(self):
@@ -157,6 +161,8 @@ class Mass():
 
     def __str__(self):
         """For print and string."""
+        if not self.val % 1:
+            return str(int(self.val)) + self.unit
         return str(self.val) + self.unit
 
     def __int__(self):
@@ -214,8 +220,12 @@ class Angle():
     def __str__(self):
         """For print and string."""
         if self.unit == 'deg':
+            if not self.val % 1:
+                return str(int(self.val)) + "\xb0"
             return str(self.val) + "\xb0"
         else:
+            if not self.val % 1:
+                return str(int(self.val)) + self.unit
             return str(self.val) + self.unit
 
     def __int__(self):
@@ -280,3 +290,60 @@ class Angle():
         if unit == 'deg':
             val = round(math.degrees(val), 13)
         return Angle(val, unit)
+
+
+class Speed():
+    """
+    Define speed units.
+
+    val = number
+    unit = string, ('m/s' = kilometer per second, 'm/s' = meters per second)
+    """
+
+    def __init__(self, val, unit='m/s'):
+        """Class return number with unit."""
+        if unit == 'm/s':
+            self.unit = unit
+        elif unit == 'km/h':
+            self.unit = unit
+        else:
+            raise Exception('non-specific unit.')
+        self.val = val
+
+    def __str__(self):
+        """For string and print."""
+        if not self.val % 1:
+            return str(int(self.val)) + self.unit
+        return str(self.val) + self.unit
+
+    def __int__(self):
+        """For int() function."""
+        return int(round(self.val))
+
+    def __float__(self):
+        """For float() function."""
+        return float(self.val)
+
+    def toKmpH(self):
+        """Increase uint."""
+        if self.unit == 'm/s':
+            self.val *= 3.6
+            self.unit = 'km/h'
+        elif self.unit == 'km/h':
+            pass
+        else:
+            raise Exception('Not possible increase unit.')
+
+    def toMpS(self):
+        """Reduce unit."""
+        if self.unit == 'km/h':
+            self.val /= 3,6
+            self.unit = 'm/s'
+        elif self.unit == 'm/s':
+            pass
+        else:
+            raise Exception('Not possible reduce unit.')
+            
+v = Speed(11/2)
+v.toKmpH()
+print(v)
